@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="static/style.css">
+    {% block title %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <div class="line">
+            <div class="logo">
+                <img src="images/as4.png" alt="aaa">
+            </div>
+            <div class="bar" >
+                <a href="html/about_us.html">О нас</a>
+                <a href="">Кошки</a>
+                <a href="">Собаки</a>
+                <a href="">Другие животные</a>
+            </div>
+            <div class="singin">
+                <button>Войти</button>
+            </div>
+        </div>
+    </header>
+
+    {% block body %}{% endblock %}
+
+    <footer class="footer">
+        <div class="content">
+            <div class="info">
+                <h1>Контакты</h1>
+                <h3>Номер: +7 (963) 232 37 20</h3>
+                <h3>Почта: Alisaalborova13@gmail.com</h3>
+                <div class="ico">
+                    <img src="images/vk.png" alt="a">
+                    <img src="images/tg.png" alt="a">
+                    <img src="images/ws.png" alt="a">
+                </div>
+            </div>
+            <div class="maps">
+                <div class="maps_map" style="position:relative;overflow:hidden;">
+                    <a href="https://yandex.ru/maps/47/nizhny-novgorod/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Нижний Новгород</a>
+                    <a href="https://yandex.ru/maps/geo/nizhniy_novgorod/53105078/?ll=44.006520%2C56.326799&utm_medium=mapframe&utm_source=maps&z=11" style="color:#eee;font-size:12px;position:absolute;top:14px;">Нижний Новгород — Яндекс Карты</a>
+                    <iframe src="https://yandex.ru/map-widget/v1/?ll=44.006520%2C56.326799&mode=poi&poi%5Bpoint%5D=44.006506%2C56.326802&poi%5Buri%5D=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1MzEwNTA3OBIr0KDQvtGB0YHQuNGPLCDQndC40LbQvdC40Lkg0J3QvtCy0LPQvtGA0L7QtCIKDa0GMEIVpE5hQg%2C%2C&z=11" width="529" height="327" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="content_2">
+            <p>© Happy Tails | by Alisa Alborova</p>
+        </div>
+    </footer>
+</body>
+</html>
