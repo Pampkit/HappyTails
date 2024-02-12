@@ -1,7 +1,12 @@
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
+
+from models import Animals,Users, db
 app = Flask(__name__)
-# db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///animal.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# связываем приложение и экземпляр SQLAlchemy
+db.init_app(app)
 
 
 @app.route('/')
