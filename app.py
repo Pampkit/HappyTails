@@ -16,7 +16,9 @@ def index():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    animal_help_img_list = ["1.png","2.png","3.png","4.png","5.png","6.png"]
+    animal_help_desc_list = [" Старушке Цыганке необходимо проверить здоровье!", "Старичкам находящимся на постоянном обеспечении приюта нужна поддержка!", "Серкан в беде!", "У Тузика рак, ему нужна помощь!", "Друзья, срочно нужна помощь нашему старичку!", " КРУГЕТС НЕ МОЖЕТ ХОДИТЬ!"]
+    return render_template('about.html',img=animal_help_img_list,desc=animal_help_desc_list)
 
 if __name__ == "__main__":
     app.run(debug=True)

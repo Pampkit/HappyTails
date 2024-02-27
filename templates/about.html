@@ -63,10 +63,10 @@
 
     <div>
         <!-- <h1>assssss</h1> -->
-        <?php
-            $arr_img = ["1.png","2.png","3.png","4.png","5.png","6.png"];
-            $arr_name = [" Старушке Цыганке необходимо проверить здоровье!", "Старичкам находящимся на постоянном обеспечении приюта нужна поддержка!", "Серкан в беде!", "У Тузика рак, ему нужна помощь!", "Друзья, срочно нужна помощь нашему старичку!", " КРУГЕТС НЕ МОЖЕТ ХОДИТЬ!"];
-        ?>
+<!--        <?php-->
+<!--            $arr_img = ["1.png","2.png","3.png","4.png","5.png","6.png"];-->
+<!--            $arr_name = [" Старушке Цыганке необходимо проверить здоровье!", "Старичкам находящимся на постоянном обеспечении приюта нужна поддержка!", "Серкан в беде!", "У Тузика рак, ему нужна помощь!", "Друзья, срочно нужна помощь нашему старичку!", " КРУГЕТС НЕ МОЖЕТ ХОДИТЬ!"];-->
+<!--        ?>-->
         <!-- <div class="one_cat">
             <img src="../images/animals/1.png" alt="">
             <p class="one_cat_p"><?php echo 'aa'?></p>
@@ -74,14 +74,13 @@
     </div>
 
     <div class="pipi">
-        <?php
-            for($i=0; $i < count($arr_img) ; $i++): ?>
-                <div class="pupu">
-                    <img src="../images/Other/<?php echo $arr_img[$i] ?>" alt="">
-                    <div style="height: 55px"><p class="popa"><?php echo $arr_name[$i] ?></p></div>
-                    <a href="index.php?page=form"><button class="pupu_but">Помочь</button></a>
-                </div>
-        <?php endfor; ?>
+        {% for i in range(img|length) %}
+            <div class="pupu">
+                <img src="../static/images/Other/{{ img[i] }}" alt="">
+                <div style="height: 55px"><p class="popa">{{ desc[i] }}</p></div>
+                <a href="index.php?page=form"><button class="pupu_but">Помочь</button></a>
+            </div>
+        {% endfor %}
     </div>
 
 
