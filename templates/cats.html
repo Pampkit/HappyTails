@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Cats</title>
+{% endblock %}
+
+{% block body %}
+<div class="main">
+    <div class="cats_name">
+        <h1>Наши подопечные</h1>
+    </div>
+    <div class="cats_bar">
+        <a href="/cats"><button class="cats_bar_cat">Кошки</button></a>
+        <a href="/dogs"><button class="cats_bar_dog">Собаки</button></a>
+    </div>
+
+    <div class="cats_content">
+        {% for cat in cats_list %}
+            <div class="one_cat">
+                <img src="../static/images/animals/{{ cat.photo }}" alt="">
+                <p class="one_cat_p">{{ cat.name }}</p>
+                <a class="one_cat_a" href="#">
+                    <button class="one_cat_but">Познакомиться</button>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
