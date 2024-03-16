@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Form</title>
+{% endblock %}
+
+{% block body %}
+<div class="main">
+    <div class="cats_name">
+        <h1>Спасибо за вашу помощь!</h1>
+    </div>
+
+    <div class="money">
+        <div class="money_contetnt">
+            <p>150 руб.</p>
+            <p>И мы сможем купить вкусный<br> обед нашему подопечному</p>
+        </div>
+        <div class="money_contetnt">
+            <p>300 руб.</p>
+            <p>И мы сможем оплатить осмотр<br> ветеринара или лекарства</p>
+        </div>
+        <div class="money_contetnt">
+            <p>Любая другая сумма</p>
+            <p>Каждое ваше пожертвование дает возможность<br> подарить бездомышам корм, миски, поводки,<br> лекарства и так далее, они будут вам очень благодарны!</p>
+        </div>
+    </div>
+
+    <div class="form">
+        <div class="input">
+            <input class="inp" type="text" placeholder="Сумма">
+        </div>
+        <hr>
+        <div class="input">
+            <input class="inp" type="text" placeholder="Назначение платежа">
+        </div>
+        <hr>
+        <div class="input">
+            <input class="inp" type="text" placeholder="Ваш e-mail">
+        </div>
+        <hr>
+        <div class="input_ch">
+            <input type="checkbox" name="scales" checked>
+            <label for="scales">Я ознакомлен и согласен с Политикой конфиденциальности и Публичной офертой о заключении договора пожертвования</label>
+        </div>
+
+        <button class="cont_button">Пожертвовать</button>
+    </div>
+</div>
+{% endblock %}

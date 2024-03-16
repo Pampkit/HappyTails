@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Form</title>
+{% endblock %}
+
+{% block body %}
+<div class="main">
+    <div class="login-container">
+        <div class="img-container">
+            <img src="../static/images/big_pupi.png" alt="Ваш логотип">
+        </div>
+        <form class="form" action="/login" method="post" style="width: 50%">
+            <div class="input">
+                <input class="inp" type="text" name="login" placeholder="Ваш логин">
+            </div>
+            <hr>
+            <div class="input">
+                <input class="inp" type="text" name="password" placeholder="Ваш пароль">
+            </div>
+            <hr>
+            <button type="submit" value="submit" class="cont_button" style="margin-top: 60px">Войти</button>
+            <div class="register-link">
+                <p>У вас нет аккаунта? <a href="/register">Зарегистрируйтесь</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

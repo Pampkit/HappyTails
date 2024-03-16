@@ -1,5 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+
 db = SQLAlchemy()
+
 
 class Animals(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -10,7 +13,8 @@ class Animals(db.Model):
     age = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.String(200), nullable=False)
 
-class Users(db.Model):
+
+class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
     login = db.Column(db.String(200), nullable=False)

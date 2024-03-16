@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Animal_cart</title>
+{% endblock %}
+
+{% block body %}
+<div class="main">
+    <div class="animal_cart_content">
+        <img src="../static/images/animals/{{single_animal[0].photo}}" alt="">
+        <div class="animal_cart_desc">
+            <h1> {{single_animal[0].name}}</h1>
+            <p>
+                {{single_animal[0].description}}
+            </p>
+                <div style="margin-top:20px;">
+                <a href="#">Добавить к себе</a>
+                </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

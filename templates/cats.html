@@ -19,9 +19,10 @@
             <div class="one_cat">
                 <img src="../static/images/animals/{{ cat.photo }}" alt="">
                 <p class="one_cat_p">{{ cat.name }}</p>
-                <a class="one_cat_a" href="#">
+                <a class="one_cat_a" href="/animal_cart/{{cat.id}}">
                     <button class="one_cat_but">Познакомиться</button>
                 </a>
+
             </div>
         {% endfor %}
     </div>
