@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Breed_detection</title>
+{% endblock %}
+
+{% block body %}
+<div class="main">
+    <form action="{{url_for('upload')}}" method="post" enctype="multipart/form-data">
+        <p><input type="file" name="file"></p>
+        <p><input type="submit" value="Загрузить"></p>
+    </form>
+    {% if breed_detected %}
+    <div>
+        <p>Распознанная порода: {{ breed_detected }}</p>
+    </div>
+{% endif %}
+</div>
+
+{% endblock %}

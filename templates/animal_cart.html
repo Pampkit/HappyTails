@@ -13,9 +13,16 @@
             <p>
                 {{single_animal[0].description}}
             </p>
+                {% if current_user.is_authenticated %}
                 <div style="margin-top:20px;">
-                <a href="#">Добавить к себе</a>
+                <a href="/form/{{single_animal[0].name}}">Оформить опеку</a>
                 </div>
+                {% else %}
+                <div style="margin-top:20px;">
+                    <a href="/login">Войдите или Зарегистрируйтесь что бы оформить опеку</a>
+                </div>
+                {% endif %}
+
         </div>
 
     </div>

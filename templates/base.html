@@ -25,11 +25,10 @@
                 <a href="/about">О нас</a>
                 <a href="/cats">Кошки</a>
                 <a href="/dogs">Собаки</a>
-                <a href="/help">Помочь нам</a>
+                <a href="/care">Об уходе</a>
             </div>
             <div class="singin">
                 {% if current_user.is_authenticated %}
-                <a style="margin-right:20px;" href="/"><img src="../static/images/catcart32.png" alt=""></a>
                 <a href="/user_cabinet"><img src="../static/images/cathome.png" alt=""></a>
                 {% else %}
                 <a href="/login"><button>Войти</button></a>

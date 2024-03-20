@@ -1,8 +1,11 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask_login import LoginManager, login_user, login_required, current_user
 
+from detection import detection_breed
 from models import Animals, Users, db
 from werkzeug.security import generate_password_hash, check_password_hash
+from PIL import Image
+import os
 
 app = Flask(__name__, template_folder='templates')
 app.config['SECRET_KEY'] = 'secret-key-goes-here'
@@ -55,14 +58,17 @@ def animal_cart(animal_id):
     return render_template('animal_cart.html', single_animal=single_animal)
 
 
-@app.route('/help')
-def help():
-    return render_template('help.html')
+@app.route('/care')
+def care():
+    return render_template('care.html')
 
 
-@app.route('/form')
-def form():
-    return render_template('form.html')
+@app.route('/form/<string:animal_name>')
+def form(animal_name):
+    animal = Animals.query.filter_by(name=animal_name).first()
+    gender = animal.gender
+    print(gender)
+    return render_template('form.html', animal_name=animal_name, gender=gender)
 
 
 @app.route('/user_cabinet')
@@ -117,6 +123,27 @@ def register_post():
 def load_user(user_id):
     # since the user_id is just the primary key of our user table, use it in the query for the user
     return Users.query.get(int(user_id))
+
+
+@app.route('/breed')
+def breed():
+    return render_template('breed.html',breed_detected=session.pop('breed_detected', None))
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    file = request.files['file']
+    img = file.read()
+    with open('image.jpg', 'wb') as f:
+        f.write(img)
+    # -------------------------------------------
+    name_breed = detection_breed('image.jpg')
+    session['breed_detected'] = name_breed
+    if os.path.exists("image.jpg"):
+        os.remove('image.jpg')
+    else:
+        print("The file does not exist")
+    return redirect(url_for('breed'))
 
 
 if __name__ == "__main__":
