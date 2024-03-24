@@ -6,8 +6,30 @@
 
 {% block body %}
 <div class="main">
-    <h1 class="title">
-        Welcome, {{ name }}!
-    </h1>
+
+    <div class="user_name">
+        <h1 class="center">Привет, {{ name }}!</h1>
+        <div class="user_button"><a href="/logout"><button>Выйти</button></a></div>
+    </div>
+
+    <div class="user_content">
+        <h1>Твои животные:</h1>
+        <p>Тут все твои животные, которые у тебя на подопечении.</p>
+        <div class="cats_content">
+            {% for i in animals_users %}
+                <div class="one_cat">
+                    <img src="../static/images/animals/{{ i.photo }}" alt="">
+                    <div style="display: flex;">
+                        <p class="one_cat_p">{{ i.name }}</p>
+                        <a href="/delete_animal/{{ i.id }}" onclick="return confirm('Are you sure you want to delete this animal?');">
+                            <img style="width: 30px; height:30px; margin-left:8px;" src="../static/images/cattrash.png" alt="">
+                        </a>
+                    </div>
+                </div>
+
+
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}

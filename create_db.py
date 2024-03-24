@@ -1,5 +1,5 @@
 from flask import Flask
-from models import Animals, Users, db
+from models import Animals, Users, db, Orders
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///animal.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -30,8 +30,12 @@ if __name__ == '__main__':
                             animal11, animal12, animal13, animal14, animal15, animal16])
         db.session.commit()
 
-        user1 = Users(name='admin', login='admin', password='admin', role=1)
-        user2 = Users(name='Alisa', login='alisa', password='alisa', role=0)
+        user1 = Users(name='admin', surname='admin',name2='admin',number='+79632323720', email='alisaalborova@gmail.com', login='admin', password='admin', role=1)
+        user2 = Users(name='Alisa', surname='Alborova',name2='Michailovna', number='+79632323720', email='alisaalborova@gmail.com', login='alisa', password='alisa', role=0)
+
         db.session.add_all([user1,user2])
         db.session.commit()
+
+
+
 

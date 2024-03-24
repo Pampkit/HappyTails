@@ -1,11 +1,12 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, session
-from flask_login import LoginManager, login_user, login_required, current_user
+from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 
 from detection import detection_breed
-from models import Animals, Users, db
+from models import Animals, Users, db, Orders
 from werkzeug.security import generate_password_hash, check_password_hash
 from PIL import Image
 import os
+from datetime import date
 
 app = Flask(__name__, template_folder='templates')
 app.config['SECRET_KEY'] = 'secret-key-goes-here'
@@ -64,22 +65,64 @@ def care():
 
 
 @app.route('/form/<string:animal_name>')
+@login_required
 def form(animal_name):
     animal = Animals.query.filter_by(name=animal_name).first()
     gender = animal.gender
-    print(gender)
-    return render_template('form.html', animal_name=animal_name, gender=gender)
+    today = date.today().day
+    an_id = animal.id
+    return render_template('form.html', animal_name=animal_name, gender=gender, today=today, anim_id=animal.id)
+
+
+@app.route('/submit_form', methods=['POST'])
+def submit_form():
+    if request.method == 'POST':
+        count = request.form['amount']  # Получаем данные из формы
+        description = request.form['purpose']
+        email = request.form['email']
+        date_now = date.today()
+        animal_id = request.form['animal_id']  # Получаем идентификатор животного из формы
+        user_id = request.form['user_id']
+
+        # Создаем новую запись в базе данных
+        new_order = Orders(id_user=user_id, id_animal=animal_id, count=count, description=description, date=date_now,
+                           email=email)
+
+        # Добавляем новую запись в сессию и сохраняем ее в базе данных
+        db.session.add(new_order)
+        db.session.commit()
+
+        return redirect(url_for('user_cabinet'))  # Перенаправляем пользователя на страницу успеха
 
 
 @app.route('/user_cabinet')
 @login_required
 def user_cabinet():
-    return render_template('user_cabinet.html', name=current_user.name)
+    animals_users = []
+    orders = Orders.query.filter_by(id_user=current_user.id).all()
+    for i in range(len(orders)):
+        animal = Animals.query.filter_by(id=orders[i].id_animal).all()
+        animals_users.append(animal[0])
+    return render_template('user_cabinet.html', name=current_user.name, animals_users=animals_users)
 
+
+@app.route('/delete_animal/<int:animal_id>', methods=['GET'])
+def delete_animal(animal_id):
+    print(animal_id)
+    order = Orders.query.filter_by(id_user=current_user.id, id_animal=animal_id).first_or_404()
+    db.session.delete(order)
+    db.session.commit()
+    return redirect(url_for('user_cabinet'))
 
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
 
 
 @app.route('/login', methods=['POST'])
@@ -103,7 +146,11 @@ def register():
 @app.route('/register', methods=['POST'])
 def register_post():
     login = request.form.get('login')
+    surname = request.form.get('surname')
     name = request.form.get('name')
+    name2 = request.form.get('name')
+    number = request.form.get('number')
+    email = request.form.get('email')
     password = request.form.get('password')
     confirm_password = request.form.get('confirm_password')
 
@@ -113,7 +160,8 @@ def register_post():
     if user or password != confirm_password:  # if a user is found or password != confirm_password, we want to redirect back to signup page so user can try again
         return redirect(url_for('register'))
 
-    new_user = Users(name=name, login=login, password=password, role=0)
+    new_user = Users(name=name, surname=surname, name2=name2, number=number, email=email, login=login,
+                     password=password, role=0)
     db.session.add(new_user)
     db.session.commit()
     return redirect(url_for('login'))
@@ -127,7 +175,7 @@ def load_user(user_id):
 
 @app.route('/breed')
 def breed():
-    return render_template('breed.html',breed_detected=session.pop('breed_detected', None))
+    return render_template('breed.html', breed_detected=session.pop('breed_detected', None))
 
 
 @app.route('/upload', methods=['POST'])

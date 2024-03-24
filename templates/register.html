@@ -10,21 +10,37 @@
         <div class="img-container">
             <img style="height: 750px" src="../static/images/ddd.png" alt="Ваш логотип">
         </div>
-        <form class="form" action="/register" method="post" style="width: 50%; height: 700px">
+        <form class="form" action="/register" method="post" style="width: 50%; height: 1100px">
             <div class="input">
-                <input class="inp" name="name" type="text" placeholder="Ваше имя">
+                <input class="inp" name="surname" type="text" placeholder="Ваша Фамиля" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="login" type="text" placeholder="Ваш логин">
+                <input class="inp" name="name" type="text" placeholder="Ваше имя" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="password" type="text" placeholder="Ваш пароль">
+                <input class="inp" name="name2" type="text" placeholder="Ваше Отечство">
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="confirm_password" type="text" placeholder="Повторите пароль">
+                <input class="inp" name="number" type="text" placeholder="Ваш номер" required>
+            </div>
+            <hr>
+            <div class="input">
+                <input class="inp" name="email" type="text" placeholder="Ваш email" required>
+            </div>
+            <hr>
+            <div class="input">
+                <input class="inp" name="login" type="text" placeholder="Ваш логин" required>
+            </div>
+            <hr>
+            <div class="input">
+                <input class="inp" name="password" type="text" placeholder="Ваш пароль" required>
+            </div>
+            <hr>
+            <div class="input">
+                <input class="inp" name="confirm_password" type="text" placeholder="Повторите пароль" required>
             </div>
             <hr>
             <button class="cont_button" type="submit" value="submit" style="margin-top: 60px">Зарегистрироваться</button>

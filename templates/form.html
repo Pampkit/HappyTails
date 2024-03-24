@@ -34,25 +34,30 @@
         </div>
     </div>
 
-    <div class="form">
+    <form class="form" style="height:550px" method="POST" action="{{ url_for('submit_form') }}">
         <div class="input">
-            <input class="inp" type="text" placeholder="Сумма">
+            <input class="inp" type="text" name="amount" placeholder="Сумма" required>
         </div>
         <hr>
         <div class="input">
-            <input class="inp" type="text" placeholder="Назначение платежа">
+            <input class="inp" type="text" name="purpose" placeholder="Назначение платежа" required>
         </div>
         <hr>
         <div class="input">
-            <input class="inp" type="text" placeholder="Ваш e-mail">
+            <input class="inp" type="text" name="email" placeholder="Ваш e-mail" required>
         </div>
         <hr>
+        <div style="margin-top: 10px; margin-left: 50px">
+            <p>Пожалуйста, обратите внимание, что списание средств будет автоматически происходить каждый месяц {{ today }} числа. Вы можете отменить подписку в любое время, в личном кабинете.</p>
+        </div>
         <div class="input_ch">
-            <input type="checkbox" name="scales" checked>
-            <label for="scales">Я ознакомлен и согласен с Политикой конфиденциальности и Публичной офертой о заключении договора пожертвования</label>
+            <input type="checkbox" name="scales" checked required>
+            <label for="scales">Я ознакомлен и согласен с Политикой конфиденциальности и Публичной офертой о заключении договора опеки</label>
         </div>
+        <input type="hidden" name="animal_id" value="{{ anim_id }}">
+        <input type="hidden" name="user_id" value="{{ current_user.id }}">
 
-        <button class="cont_button">Оформить опеку</button>
-    </div>
+        <button class="cont_button" type="submit">Оформить опеку</button>
+    </form>
 </div>
 {% endblock %}
