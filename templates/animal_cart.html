@@ -14,9 +14,15 @@
                 {{single_animal[0].description}}
             </p>
                 {% if current_user.is_authenticated %}
-                <div style="margin-top:20px;">
-                <a href="/form/{{single_animal[0].name}}">Оформить опеку</a>
-                </div>
+                    {% if order_user_single_animal %}
+                        <div style="margin-top:20px;">
+                        <p>Это животное уже находится под вашей опекой</p>
+                        </div>
+                    {% else %}
+                        <div style="margin-top:20px;">
+                        <a href="/form/{{single_animal[0].name}}">Оформить опеку</a>
+                        </div>
+                    {% endif %}
                 {% else %}
                 <div style="margin-top:20px;">
                     <a href="/login">Войдите или Зарегистрируйтесь что бы оформить опеку</a>

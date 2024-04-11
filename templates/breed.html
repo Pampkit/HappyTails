@@ -6,15 +6,80 @@
 
 {% block body %}
 <div class="main">
-    <form action="{{url_for('upload')}}" method="post" enctype="multipart/form-data">
-        <p><input type="file" name="file"></p>
-        <p><input type="submit" value="Загрузить"></p>
+    <div class="cats_name">
+    <h1>Узнайте породу своего питомца</h1>
+    </div>
+    <div class="desc">
+        <h3 style="margin-top: 30px;">Загрузите фотографию своего питомца и получите информацию о его породе и правилам ухода</h3>
+    </div>
+    <form style="margin-top:50px;" action="{{url_for('upload')}}" method="post" enctype="multipart/form-data">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+        <div class="example-2">
+          <div class="form-group">
+            <input type="file" name="file" id="file" class="input-file">
+            <label for="file" class="btn btn-tertiary js-labelFile">
+              <i class="icon fa fa-check"></i>
+              <span class="js-fileName">Загрузить файл</span>
+            </label>
+          </div>
+         </div>
+        <div style="display:flex; justify-content:center; margin-bottom: 20px;">
+            <input class="breed_dtn" type="submit" value="Загрузить">
+        </div>
+
     </form>
     {% if breed_detected %}
+
+    <div class="desc">
+        <h2 style="margin-top: 15px;">Порода вашего питомца: {{ breed_detected }}</h2>
+    </div>
+
+    <div class="help_document">
+        <div class="li_help">
+            <p class="o_li">Здоровье</p>
+            <p>{{ breed_health}}</p>
+            </div>
+        <div class="li_help">
+            <p class="o_li">Физические нагрузки</p>
+            <p>{{ breed_activity}}</p>
+        </div>
+        <div class="li_help">
+            <p class="o_li">Питание</p>
+            <p>{{ breed_nutrition}}</p>
+        </div>
+        <div class="li_help">
+            <p class="o_li">Уход</p>
+            <p>{{ breed_grooming}}</p>
+        </div>
+    </div>
+
     <div>
-        <p>Распознанная порода: {{ breed_detected }}</p>
+        <p></p>
     </div>
 {% endif %}
 </div>
 
-{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  $('.input-file').each(function() {
+    var $input = $(this),
+        $label = $input.next('.js-labelFile'),
+        labelVal = $label.html();
+
+    $input.on('change', function(element) {
+      var fileName = '';
+      if (element.target.value) fileName = element.target.value.split('\\').pop();
+      if (fileName) {
+        $label.addClass('has-file').find('.js-fileName').html(fileName);
+      } else {
+        $label.removeClass('has-file').find('.js-fileName').html(labelVal);
+      }
+    });
+  });
+})();
+</script>
+{% endblock %} 

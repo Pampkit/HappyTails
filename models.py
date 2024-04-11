@@ -36,3 +36,12 @@ class Orders(db.Model):
     description = db.Column(db.String(1000))
     date = db.Column(db.Date(), nullable=False)
     email = db.Column(db.String(200), nullable=False)
+
+
+class Breeds(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    animal_breed = db.Column(db.String(200), nullable=False)
+    health = db.Column(db.String(2000), nullable=False)
+    activity = db.Column(db.String(2000), nullable=False)
+    nutrition = db.Column(db.String(2000), nullable=False)
+    grooming = db.Column(db.String(2000), nullable=False)

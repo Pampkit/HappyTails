@@ -9,7 +9,7 @@ ru_en_names = {'cat-Abyssinian': 'Абиссинская кошка', 'cat-Benga
                'dog-american_bulldog':'Американский бульдог', 'dog-american_pit_bull_terrier':'Американский питбультерьер',
                'dog-basset_hound':'Бассет-хаунд', 'dog-beagle':'Бигль', 'dog-boxer':'Боксер', 'dog-chihuahua':'Чихуахуа',
                'dog-english_cocker_spaniel':'Английский кокер-спаниель', 'dog-english_setter':'Английский сеттер',
-               'dog-german_shorthaired':'Курцхаар', 'dog-great_pyrenees':'Пиренейская горная', 'dog-havanese':'Гавански бишон',
+               'dog-german_shorthaired':'Курцхаар', 'dog-great_pyrenees':'Пиренейская горная', 'dog-havanese':'Гаванский бишон',
                'dog-japanese_chin':'Японский хин', 'dog-keeshond':'Кеесхонд', 'dog-leonberger':'Леонбергер',
                'dog-miniature_pinscher':'Карликовый пинчер', 'dog-newfoundland':'Ньюфаундленд', 'dog-pomeranian':'Померанский шпиц',
                'dog-pug':'Мопс', 'dog-saint_bernard':'Сенбернар', 'dog-samoyed':'Самоед', 'dog-scottish_terrier':'Шотландский терьер',

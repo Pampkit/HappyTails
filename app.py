@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash, ses
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 
 from detection import detection_breed
-from models import Animals, Users, db, Orders
+from models import Animals, Users, db, Orders, Breeds
 from werkzeug.security import generate_password_hash, check_password_hash
 from PIL import Image
 import os
@@ -55,8 +55,13 @@ def gods():
 @app.route('/animal_cart/<int:animal_id>')
 def animal_cart(animal_id):
     single_animal = Animals.query.filter_by(id=animal_id).all()
+    if current_user.is_authenticated:
+        order_user_single_animal = Orders.query.filter_by(id_user=current_user.id, id_animal=animal_id).first()
+    else:
+        order_user_single_animal = "sorry"
+
     print(single_animal)
-    return render_template('animal_cart.html', single_animal=single_animal)
+    return render_template('animal_cart.html', single_animal=single_animal, order_user_single_animal=order_user_single_animal)
 
 
 @app.route('/care')
@@ -103,7 +108,25 @@ def user_cabinet():
     for i in range(len(orders)):
         animal = Animals.query.filter_by(id=orders[i].id_animal).all()
         animals_users.append(animal[0])
-    return render_template('user_cabinet.html', name=current_user.name, animals_users=animals_users)
+    return render_template('user_cabinet.html', name=current_user.name, animals_users=animals_users, orders=orders)
+
+
+@app.route('/admin_cabinet')
+@login_required
+def admin_cabinet():
+    all_orders = Orders.query.all()
+    all_users = Users.query.filter_by(role=0).all()
+    users_animals = {}
+    for i in range(len(all_users)):
+        id_user = all_users[i].id
+        users_animals[str(id_user)] = ''
+        for j in range(len(all_orders)):
+            if all_orders[j].id_user == id_user:
+                name_animal = Animals.query.filter_by(id=all_orders[j].id_animal).first()
+                users_animals[str(id_user)] += name_animal.name + " "
+    print(users_animals)
+
+    return render_template('admin_cabinet.html', name=current_user.name, all_users=all_users, users_animals=users_animals)
 
 
 @app.route('/delete_animal/<int:animal_id>', methods=['GET'])
@@ -113,6 +136,7 @@ def delete_animal(animal_id):
     db.session.delete(order)
     db.session.commit()
     return redirect(url_for('user_cabinet'))
+
 
 @app.route('/login')
 def login():
@@ -133,9 +157,12 @@ def login_post():
     if not user or user.password != password:
         return redirect(url_for('login'))
 
-    # if the above check passes, then we know the user has the right credentials
-    login_user(user)
-    return redirect(url_for('user_cabinet'))
+    if user.role == 0:
+        login_user(user)  # вход пользователя
+        return redirect(url_for('user_cabinet'))
+    else:
+        login_user(user)
+        return redirect(url_for('admin_cabinet'))
 
 
 @app.route('/register', methods=['GET'])
@@ -175,7 +202,7 @@ def load_user(user_id):
 
 @app.route('/breed')
 def breed():
-    return render_template('breed.html', breed_detected=session.pop('breed_detected', None))
+    return render_template('breed.html', breed_detected=session.pop('breed_detected', None), breed_health=session.pop('breed_health', None), breed_activity=session.pop('breed_activity', None), breed_nutrition=session.pop('breed_nutrition', None), breed_grooming=session.pop('breed_grooming', None))
 
 
 @app.route('/upload', methods=['POST'])
@@ -186,7 +213,20 @@ def upload():
         f.write(img)
     # -------------------------------------------
     name_breed = detection_breed('image.jpg')
-    session['breed_detected'] = name_breed
+    care_breed = Breeds.query.filter_by(animal_breed=name_breed).first()
+    if name_breed == 'Ой, неудалось узнать породу вашего животного, попробуйте другую фотографию':
+        session['breed_detected'] = 'Ой, неудалось узнать породу вашего животного, попробуйте другую фотографию'
+        session['breed_health'] = ''
+        session['breed_activity'] = ''
+        session['breed_nutrition'] = ''
+        session['breed_grooming'] = ''
+    else:
+        session['breed_detected'] = name_breed
+        session['breed_health'] = care_breed.health
+        session['breed_activity'] = care_breed.activity
+        session['breed_nutrition'] = care_breed.nutrition
+        session['breed_grooming'] = care_breed.grooming
+
     if os.path.exists("image.jpg"):
         os.remove('image.jpg')
     else:

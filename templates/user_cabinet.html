@@ -16,20 +16,61 @@
         <h1>Твои животные:</h1>
         <p>Тут все твои животные, которые у тебя на подопечении.</p>
         <div class="cats_content">
-            {% for i in animals_users %}
+            {% for i in range(animals_users|length) %}
                 <div class="one_cat">
-                    <img src="../static/images/animals/{{ i.photo }}" alt="">
+                    <img src="../static/images/animals/{{ animals_users[i].photo }}" alt="">
                     <div style="display: flex;">
-                        <p class="one_cat_p">{{ i.name }}</p>
-                        <a href="/delete_animal/{{ i.id }}" onclick="return confirm('Are you sure you want to delete this animal?');">
+                        <p class="one_cat_p">{{ animals_users[i].name }}</p>
+
+                        <a href="/delete_animal/{{ animals_users[i].id }}" onclick="return confirm('Вы действительно хотите отказаться от этого животного?');">
                             <img style="width: 30px; height:30px; margin-left:8px;" src="../static/images/cattrash.png" alt="">
                         </a>
                     </div>
+                    <a href="#" onclick="showSubscriptionDetails('{{ animals_users[i].name }}','{{ orders[i].count }}','{{ orders[i].date }}' )">
+                        <button class="one_cat_but" style="margin-left:0;">Подробнее</button>
+                    </a>
                 </div>
+
 
 
             {% endfor %}
         </div>
     </div>
 </div>
+<!-- Модальное окно для отображения подробностей подписки -->
+<div id="subscriptionModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3>Информация о ващей подписке на животное</h3>
+        <div style="display: flex; margin-top: 10px;">
+            <p>Имя животного:</p>
+            <p style="margin-left: 5px;" id="name"></p>
+        </div>
+        <div style="display: flex; margin-top: 10px;">
+            <p>Ежемесячный платеж составляет:</p>
+            <p style="margin-left: 5px;" id="count"></p>
+        </div>
+        <div style="display: flex; margin-top: 10px;">
+            <p>Дата списания:</p>
+            <p style="margin-left: 5px;" id="date"></p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function showSubscriptionDetails(name, count, date) {
+        document.getElementById("name").innerText = name;
+        document.getElementById("subscriptionModal").style.display = "block";
+        document.getElementById("count").innerText = count;
+        document.getElementById("subscriptionModal").style.display = "block";
+        document.getElementById("date").innerText = date;
+        document.getElementById("subscriptionModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("subscriptionModal").style.display = "none";
+    }
+</script>
+
 {% endblock %}

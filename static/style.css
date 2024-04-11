@@ -12,8 +12,9 @@ a{
     font-family: 'Montserrat', sans-serif;
 }
 
-h1,h2,p,button{
+h1, h3, h2,p,button{
     font-family: 'Montserrat', sans-serif;
+    color: #333333;
 }
 
 
@@ -959,6 +960,44 @@ tr:nth-child(even) {
 
 
 
+.modal {
+    display: none; /* по умолчанию скрыто */
+    position: fixed;
+    z-index: 999; /* чтобы модальное окно было поверх всего остального контента */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* добавление прокрутки, если контент слишком большой */
+    background-color: rgba(255, 255, 255, 0.8); /* белый фон с прозрачностью */
+}
+
+/* Стили для контента модального окна */
+.modal-content {
+    background-color: white;
+    margin: 15% auto; /* появление по центру страницы */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%; /* ширина контента */
+}
+
+/* Стили для кнопки закрытия */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
 
 /* -------------------footer----------------------- */
 
@@ -1096,3 +1135,63 @@ tr:nth-child(even) {
 
 
 
+
+
+
+
+/* ------------------Breed----------------- */
+*	=	File Load */
+/* Стили для контейнера */
+.file-load-block {
+	width: 310px;
+	height: 35px;
+	overflow: hidden;
+	position: relative;
+}
+/* работаем с инпутом который конкретно file */
+.file-load-block input[type=file] {
+	/* делаем кроссбраузерную прозрачность */
+	opacity: 0;
+	filter: alpha(opacity=0);
+
+	/* Позиционируем абсолютно отсносительно контейнера по правому краю */
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	/*
+	Задаем высоту и делаем шрифт огромным
+	для того чтобы кнопка "обзор" занимала все пространство контейнера
+	*/
+	height: 35px;
+	font-size: 600px;
+
+	/* Ставим наш инпут поверх всего содержимого */
+	z-index: 2;
+	cursor: pointer;
+	width: auto;
+}
+/* Стилизируем инпут и кнопку которые под загрузчиком */
+.example-2 .btn-tertiary{color:#555;padding:0;line-height:40px;width:300px;margin:auto;display:block;border:2px solid #555}
+.example-2 .btn-tertiary:hover,.example-2 .btn-tertiary:focus{color:#888;border-color:#888}
+.example-2 .input-file{width:.1px;height:.1px;opacity:0;overflow:hidden;position:absolute;z-index:-1}
+.example-2 .input-file + .js-labelFile{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 10px;cursor:pointer}
+.example-2 .input-file + .js-labelFile .icon:before{content:"\f093"}
+.example-2 .input-file + .js-labelFile.has-file .icon:before{content:"\f00c";color:#5AAC7B}
+
+.breed_dtn{
+    margin-top: 35px;
+    width: 200px;
+    height: 55px;
+    border-radius: 30px;
+    border-width: 1px;
+    border-color: #000000;
+    background-image: linear-gradient(90deg, rgba(245,208,138,1) 0%, rgba(245,208,138,1) 51%, rgba(245,161,97,0.75) 100%);
+    border-style: solid;
+    color: #333333;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    box-shadow: 3px 3px 10px 1px rgba(0,0,0,0.2);
+}
