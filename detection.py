@@ -17,17 +17,16 @@ ru_en_names = {'cat-Abyssinian': 'Абиссинская кошка', 'cat-Benga
                'dog-wheaten_terrier':'Ирландский мягкошерстный пшеничный терьер', 'dog-yorkshire_terrier':'Йоркширский терьер'}
 
 def detection_breed(img):
+    # определение модели
     model = YOLO('model/best.pt')
     breed_animal = model.names
-    print(breed_animal)
+    # прогонка изображения через модель
     results = model(source=img, show=True, conf=0.6, save_txt=True)
     txt_file = 'runs/detect/predict/labels/image.txt'
     if os.path.exists(txt_file):
         with open(txt_file, 'r') as f:
             data = f.read()
-
         breed_id = data.split(' ')[0]
-
         breed_name = breed_animal[int(breed_id)]
         ru_breed_name = ru_en_names[breed_name]
         print(ru_breed_name)

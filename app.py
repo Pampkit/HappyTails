@@ -38,30 +38,29 @@ def about():
 
 @app.route('/cats')
 def cats():
+    # выборка кошек из бд животных
     cats_list = Animals.query.filter_by(kind='Кошка').all()
-    if current_user.is_authenticated:
-        print('cats', current_user.name)
-    else:
-        print('no')
     return render_template('cats.html', cats_list=cats_list)
 
 
 @app.route('/dogs')
 def gods():
+    # выборка собак из бд животных
     dogs_list = Animals.query.filter_by(kind='Собака').all()
     return render_template('dogs.html', dogs_list=dogs_list)
 
 
 @app.route('/animal_cart/<int:animal_id>')
 def animal_cart(animal_id):
+    # выборка животного по его id
     single_animal = Animals.query.filter_by(id=animal_id).all()
+    # проверка на авторизованного пользователя и его животных
     if current_user.is_authenticated:
         order_user_single_animal = Orders.query.filter_by(id_user=current_user.id, id_animal=animal_id).first()
     else:
         order_user_single_animal = "sorry"
-
-    print(single_animal)
-    return render_template('animal_cart.html', single_animal=single_animal, order_user_single_animal=order_user_single_animal)
+    return render_template('animal_cart.html', single_animal=single_animal,
+                           order_user_single_animal=order_user_single_animal)
 
 
 @app.route('/care')
@@ -126,7 +125,8 @@ def admin_cabinet():
                 users_animals[str(id_user)] += name_animal.name + " "
     print(users_animals)
 
-    return render_template('admin_cabinet.html', name=current_user.name, all_users=all_users, users_animals=users_animals)
+    return render_template('admin_cabinet.html', name=current_user.name, all_users=all_users,
+                           users_animals=users_animals)
 
 
 @app.route('/delete_animal/<int:animal_id>', methods=['GET'])
@@ -141,12 +141,6 @@ def delete_animal(animal_id):
 @app.route('/login')
 def login():
     return render_template('login.html')
-
-
-@app.route("/logout")
-def logout():
-    logout_user()
-    return redirect(url_for("login"))
 
 
 @app.route('/login', methods=['POST'])
@@ -165,6 +159,12 @@ def login_post():
         return redirect(url_for('admin_cabinet'))
 
 
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
+
+
 @app.route('/register', methods=['GET'])
 def register():
     return render_template('register.html')
@@ -172,6 +172,7 @@ def register():
 
 @app.route('/register', methods=['POST'])
 def register_post():
+    # получение данных с формы
     login = request.form.get('login')
     surname = request.form.get('surname')
     name = request.form.get('name')
@@ -180,13 +181,12 @@ def register_post():
     email = request.form.get('email')
     password = request.form.get('password')
     confirm_password = request.form.get('confirm_password')
-
+    # проверка, что такого пользователя еще нет
     user = Users.query.filter_by(
         login=login).first()  # if this returns a user, then the email already exists in database
-    print(user)
-    if user or password != confirm_password:  # if a user is found or password != confirm_password, we want to redirect back to signup page so user can try again
+    if user or password != confirm_password:
         return redirect(url_for('register'))
-
+    # создание нового пользователя
     new_user = Users(name=name, surname=surname, name2=name2, number=number, email=email, login=login,
                      password=password, role=0)
     db.session.add(new_user)
@@ -202,18 +202,24 @@ def load_user(user_id):
 
 @app.route('/breed')
 def breed():
-    return render_template('breed.html', breed_detected=session.pop('breed_detected', None), breed_health=session.pop('breed_health', None), breed_activity=session.pop('breed_activity', None), breed_nutrition=session.pop('breed_nutrition', None), breed_grooming=session.pop('breed_grooming', None))
+    return render_template('breed.html', breed_detected=session.pop('breed_detected', None),
+                           breed_health=session.pop('breed_health', None),
+                           breed_activity=session.pop('breed_activity', None),
+                           breed_nutrition=session.pop('breed_nutrition', None),
+                           breed_grooming=session.pop('breed_grooming', None))
 
 
 @app.route('/upload', methods=['POST'])
 def upload():
+    # чтение загруженного файла
     file = request.files['file']
     img = file.read()
     with open('image.jpg', 'wb') as f:
         f.write(img)
-    # -------------------------------------------
+    # детекция породы
     name_breed = detection_breed('image.jpg')
     care_breed = Breeds.query.filter_by(animal_breed=name_breed).first()
+    # определение переменных сессии для последующей рекомендации
     if name_breed == 'Ой, неудалось узнать породу вашего животного, попробуйте другую фотографию':
         session['breed_detected'] = 'Ой, неудалось узнать породу вашего животного, попробуйте другую фотографию'
         session['breed_health'] = ''

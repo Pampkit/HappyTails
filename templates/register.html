@@ -10,17 +10,17 @@
         <div class="img-container">
             <img style="height: 750px" src="../static/images/ddd.png" alt="Ваш логотип">
         </div>
-        <form class="form" action="/register" method="post" style="width: 50%; height: 1100px">
+        <form class="form" action="/register" method="post" onsubmit="return validateForm()" style="width: 50%; height: 1100px">
             <div class="input">
-                <input class="inp" name="surname" type="text" placeholder="Ваша Фамиля" required>
+                <input class="inp" name="surname" type="text" placeholder="Ваша Фамиля" pattern="[А-Яа-яЁё]{2,}" title="Введите не менее 2 символов кириллицей" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="name" type="text" placeholder="Ваше имя" required>
+                <input class="inp" name="name" type="text" placeholder="Ваше имя" pattern="[А-Яа-яЁё]{2,}" title="Введите не менее 2 символов кириллицей" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="name2" type="text" placeholder="Ваше Отечство">
+                <input class="inp" name="name2" type="text" placeholder="Ваше Отечство" pattern="[А-Яа-яЁё]{2,}" title="Введите не менее 2 символов кириллицей" >
             </div>
             <hr>
             <div class="input">
@@ -36,11 +36,11 @@
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="password" type="text" placeholder="Ваш пароль" required>
+                <input class="inp" name="password" type="text" placeholder="Ваш пароль" pattern="^(?=.*[a-zA-Z0-9]).{5,}$" title="Введите не менее 5 символов" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="confirm_password" type="text" placeholder="Повторите пароль" required>
+                <input class="inp" name="confirm_password" type="text" placeholder="Повторите пароль" title="Пароли должны совпадать" pattern="^(?=.*[a-zA-Z0-9]).{5,}$" oninput="checkPassword(this)" required>
             </div>
             <hr>
             <button class="cont_button" type="submit" value="submit" style="margin-top: 60px">Зарегистрироваться</button>
@@ -52,3 +52,50 @@
 </div>
 {% endblock %}
 
+<script>
+function validateForm() {
+    <!--проверка имени-->
+    var surname = document.forms["form"]["surname"].value;
+    // Проверка фамилии на кириллицу и минимальную длину
+    var surnamePattern = /[А-Яа-яЁё]{2,}/;
+    if (!surnamePattern.test(surname)) {
+        alert("Введите не менее 2 символов кириллицей в поле Фамилия");
+        return false;
+    }
+    <!--проверка фамилии-->
+    var name = document.forms["form"]["name"].value;
+    // Проверка фамилии на кириллицу и минимальную длину
+    var namePattern = /[А-Яа-яЁё]{2,}/;
+    if (!namePattern.test(name)) {
+        alert("Введите не менее 2 символов кириллицей в поле Имя");
+        return false;
+    }
+    <!--проверка отчества-->
+    var name2 = document.forms["form"]["name2"].value;
+    // Проверка фамилии на кириллицу и минимальную длину
+    var name2Pattern = /[А-Яа-яЁё]{2,}/;
+    if (!name2Pattern.test(name2)) {
+        alert("Введите не менее 2 символов кириллицей в поле Отчество");
+        return false;
+    }
+    <!--проверка пароля-->
+    var password = document.forms["form"]["password"].value;
+    // Проверка фамилии на кириллицу и минимальную длину
+    var passwordPattern = /^[a-zA-Z0-9]{5,}$/;
+    if (!passwordPattern.test(password)) {
+        alert("Введите не менее 5 символов");
+        return false;
+    }
+
+    return true;
+}
+<!--проверка подтверждения пароля-->
+function checkPassword(input) {
+    if (input.value !== document.querySelector('input[name="password"]').value) {
+        input.setCustomValidity('Пароли должны совпадать');
+    } else {
+        // Соответствует, очищаем сообщение об ошибке
+        input.setCustomValidity('');
+    }
+}
+</script>
