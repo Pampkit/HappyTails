@@ -5,7 +5,19 @@
 {% endblock %}
 
 {% block body %}
+
 <div class="main">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div style="display:flex; justify-content: center; align-items: center; margin-top:5px; border: 2px dashed rgba(245, 208, 138, 1); padding-top:5px; padding-bottom:5px; margin-right:150px; margin-left:150px;">
+            <ul>
+                {% for message in messages %}
+                    <h3 style="color: #333333;">{{ message }}</h3>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    {% endwith %}
     <div class="login-container">
         <div class="img-container">
             <img style="height: 750px" src="../static/images/ddd.png" alt="Ваш логотип">
@@ -24,11 +36,11 @@
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="number" type="text" placeholder="Ваш номер" required>
+                <input class="inp" name="number" type="tel" placeholder="Ваш номер" pattern="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$" title="Введите номер правильно" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="email" type="text" placeholder="Ваш email" required>
+                <input class="inp" name="email" type="email" placeholder="Ваш email" required>
             </div>
             <hr>
             <div class="input">
@@ -86,6 +98,17 @@ function validateForm() {
         alert("Введите не менее 5 символов");
         return false;
     }
+    <!--проверка номера-->
+    var number = document.forms["form"]["number"].value;
+    // Проверка фамилии на кириллицу и минимальную длину
+    var numberPattern = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
+    console.log('Validation called');
+    if (!numberPattern.test(number)) {
+    console.log('тщщщ');
+        alert("Введите номер");
+        return false;
+    }
+
 
     return true;
 }

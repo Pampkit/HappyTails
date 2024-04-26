@@ -149,8 +149,8 @@ def login_post():
     password = request.form.get('password')
     user = Users.query.filter_by(login=login).first()
     if not user or user.password != password:
+        flash('Неправильный логин или пароль', 'error')
         return redirect(url_for('login'))
-
     if user.role == 0:
         login_user(user)  # вход пользователя
         return redirect(url_for('user_cabinet'))
@@ -176,7 +176,7 @@ def register_post():
     login = request.form.get('login')
     surname = request.form.get('surname')
     name = request.form.get('name')
-    name2 = request.form.get('name')
+    name2 = request.form.get('name2')
     number = request.form.get('number')
     email = request.form.get('email')
     password = request.form.get('password')
@@ -185,6 +185,7 @@ def register_post():
     user = Users.query.filter_by(
         login=login).first()  # if this returns a user, then the email already exists in database
     if user or password != confirm_password:
+        flash('Пользователь с таким логином уже существует', 'error')
         return redirect(url_for('register'))
     # создание нового пользователя
     new_user = Users(name=name, surname=surname, name2=name2, number=number, email=email, login=login,
