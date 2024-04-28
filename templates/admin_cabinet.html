@@ -14,6 +14,12 @@
 
     <div class="user_content">
         <h2 style="color: #333333;">Информация о пользователях:</h2>
+        <!-- Добавлено поле ввода для поиска по email -->
+        <form action="/search_user" method="GET" style="margin-top: 20px;">
+                <input style="height:25px; width:200px; margin-left: 5px; border-width:1px; border-radius: 10px; background-color: transparent; color: #333333;" type="text" name="email" placeholder="  Поиск по email">
+                <button style="height:25px; width:60px; margin-left: 5px; border-width:1px; border-radius: 10px; background-color: transparent; color: #333333;" type="submit">Найти</button>
+                <a href="{{url_for('admin_cabinet')}}"><button style="height:25px; width:70px; margin-left: 5px; border-width:1px; border-radius: 10px; background-color: transparent; color: #333333;" type="button">Сбросить</button></a>
+        </form>
     </div>
 
     <table>
@@ -21,9 +27,9 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Email</th>
                 <th>Login</th>
                 <th>Password</th>
-                <th>Role</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -32,9 +38,9 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
                     <td>{{ user.login }}</td>
                     <td>{{ user.password }}</td>
-                    <td>{{ user.role }}</td>
                     <td>
                         <a href="#" onclick="showSubscriptionDetails('{{ users_animals[user.id|string] }}')">
                             <button class="one_cat_but" style="margin-left:0; margin-right:0; width: 200px;">Посмотреть животных</button>
@@ -65,7 +71,6 @@
         document.getElementById("name").innerText = name;
         document.getElementById("subscriptionModal").style.display = "block";
     }
-
     function closeModal() {
         document.getElementById("subscriptionModal").style.display = "none";
     }

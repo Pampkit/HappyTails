@@ -21,8 +21,9 @@ def detection_breed(img):
     model = YOLO('model/best.pt')
     breed_animal = model.names
     # прогонка изображения через модель
-    results = model(source=img, show=True, conf=0.6, save_txt=True)
+    results = model(source=img, show=True, conf=0.1, save_txt=True, save_conf=True)
     txt_file = 'runs/detect/predict/labels/image.txt'
+    add_text = ''
     if os.path.exists(txt_file):
         with open(txt_file, 'r') as f:
             data = f.read()
@@ -31,16 +32,20 @@ def detection_breed(img):
         ru_breed_name = ru_en_names[breed_name]
         print(ru_breed_name)
 
+        breed_conf = data.split(' ')[5]
+        if float(breed_conf[:5]) <= 0.80:
+            add_text = "Похоже ваш питомец метис, порода, которую удалось обнаружить - "
+
         if os.path.exists("runs/"):
             shutil.rmtree('runs/')
         else:
             print("The file does not exist")
-        return ru_breed_name
+        return add_text, ru_breed_name
     else:
         if os.path.exists("runs/"):
             shutil.rmtree('runs/')
         else:
             print("The file does not exist")
-        return "Ой, неудалось узнать породу вашего животного, попробуйте другую фотографию"
+        return add_text, "Ой, неудалось узнать породу вашего животного, попробуйте другую фотографию"
 
 

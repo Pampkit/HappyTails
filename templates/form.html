@@ -34,17 +34,13 @@
         </div>
     </div>
 
-    <form class="form" style="height:550px" method="POST" action="{{ url_for('submit_form') }}">
+    <form class="form" style="height:900px" method="POST" action="{{ url_for('submit_form') }}">
         <div class="input">
-            <input class="inp" type="text" name="amount" placeholder="Сумма" required>
+            <input class="inp" type="text" name="amount" id="amount" placeholder="Сумма" required>
         </div>
-        <hr>
+        <hr id="amount_hr">
         <div class="input">
-            <input class="inp" type="text" name="purpose" placeholder="Назначение платежа" required>
-        </div>
-        <hr>
-        <div class="input">
-            <input class="inp" type="text" name="email" placeholder="Ваш e-mail" required>
+            <input class="inp" type="text" name="purpose" id="purpose" placeholder="Назначение платежа">
         </div>
         <hr>
         <div style="margin-top: 10px; margin-left: 50px">
@@ -56,8 +52,149 @@
         </div>
         <input type="hidden" name="animal_id" value="{{ anim_id }}">
         <input type="hidden" name="user_id" value="{{ current_user.id }}">
+        <div style="display:flex;">
+            <div style="margin-left:50px; margin-top:50px">
+                <h3 style="margin-bottom:15px;">Заполните информацию о вашей банковской карточке</h3>
+                <form action="/process_card_info" method="POST">
+                    <label for="card_number">Номер карты:</label><br>
+                    <input style="padding:10px; font-size: 18px; margin-top:10px; margin-bottom:15px; height:50px; border-radius:5px; width:400px; border-width:1px; background-color: transparent; color: #333333;" type="text" id="card_number" name="card_number" placeholder="0000-0000-0000-0000" required><br>
 
-        <button class="cont_button" type="submit">Оформить опеку</button>
+                    <label for="expiration_month">Срок действия:</label><br>
+                    <input style="padding:10px; font-size: 18px; margin-top:10px; margin-bottom:15px; height:50px; border-radius:5px; width:180px; border-width:1px; background-color: transparent; color: #333333;" type="text" id="expiration_month" name="expiration_month" placeholder="MM" required>
+                    <input style="margin-left: 36px; padding:10px; font-size: 18px; margin-top:10px; margin-bottom:15px; height:50px; border-radius:5px; width:180px; border-width:1px; background-color: transparent; color: #333333;" type="text" id="expiration_year" name="expiration_year" placeholder="YY" required><br>
+
+                    <label for="cvv">CVV:</label><br>
+                    <input style="padding:10px; font-size: 18px; margin-top:10px; margin-bottom:15px; height:50px; border-radius:5px; width:180px; border-width:1px; background-color: transparent; color: #333333;" type="text" id="cvv" name="cvv"  placeholder="000" required><br>
+
+                    <label for="card_holder_name">Владелец карты:</label><br>
+                    <input style="padding:10px; font-size: 18px; margin-top:10px; margin-bottom:15px; height:50px; border-radius:5px; width:400px; border-width:1px; background-color: transparent; color: #333333;" type="text" id="card_holder_name" name="card_holder_name"  placeholder="Ivan Ivanov" required><br>
+                </form>
+                <button id="submit_button" class="cont_button" type="button" onclick="showLoadingAnimation()" disabled>Оформить опеку</button>
+                <button id="hidden-submit" style="display:none;" type="submit">Submit</button>
+            </div>
+
+            <div id="loading" class="windows8" style="display:none;">
+                <div class="wBall" id="wBall_1">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_2">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_3">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_4">
+                    <div class="wInnerBall"></div>
+                </div>
+                <div class="wBall" id="wBall_5">
+                    <div class="wInnerBall"></div>
+                </div>
+            </div>
+            <div id="success-message" style="display:none; position: relative; margin:auto;">
+                <h1>Оплата прошла успешно!</h1>
+            </div>
+        </div>
+
+
+
     </form>
 </div>
+
+
+<script>
+    function showLoadingAnimation() {
+        // Показать анимацию загрузки
+        document.getElementById("loading").style.display = "block";
+
+
+        // Через 5 секунд показать сообщение об успешной оплате
+        setTimeout(function() {
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("success-message").style.display = "block";
+
+            // Переадресовать через 2 секунды
+            setTimeout(function() {
+                document.getElementById("hidden-submit").click();
+            }, 2000);
+        }, 5000);
+    }
+
+    function validateCard() {
+        var cardNumber = document.getElementById("card_number").value;
+        var expirationMonth = document.getElementById("expiration_month").value;
+        var expirationYear = document.getElementById("expiration_year").value;
+        var cvv = document.getElementById("cvv").value;
+        var cardHolderName = document.getElementById("card_holder_name").value;
+
+        var amount = document.getElementById("card_number").value;
+        var purpose = document.getElementById("purpose").value;
+
+        // Проверка данных с использованием регулярных выражений
+        var cardNumberPattern = /^[0-9]{16}$/;
+        var expirationMonthPattern = /^(0[1-9]|1[0-2])$/;
+        var expirationYearPattern = /^[0-9]{2}$/;
+        var cvvPattern = /^[0-9]{3,4}$/;
+        var cardHolderNamePattern = /^[A-Za-z\s]+$/;
+
+        var amountPattern = /^[0-9]+$/;
+
+        var isValid = true;
+
+        // Проверка суммы
+        if (!amountPattern.test(amount)) {
+            isValid = false;
+            console.log("ddddd");
+            document.getElementById("amount_hr").style.borderColor = "red";
+        } else {
+            document.getElementById("amount_hr").style.borderColor = ""; // Сброс красной подсветки
+        }
+
+
+        // Проверка номера карты
+        if (!cardNumberPattern.test(cardNumber)) {
+            isValid = false;
+            document.getElementById("card_number").style.borderColor = "red";
+        } else {
+            document.getElementById("card_number").style.borderColor = ""; // Сброс красной подсветки
+        }
+
+        // Проверка месяца и года окончания срока действия карты
+        if (!expirationMonthPattern.test(expirationMonth) || !expirationYearPattern.test(expirationYear)) {
+            isValid = false;
+            document.getElementById("expiration_month").style.borderColor = "red";
+            document.getElementById("expiration_year").style.borderColor = "red";
+        } else {
+            document.getElementById("expiration_month").style.borderColor = ""; // Сброс красной подсветки
+            document.getElementById("expiration_year").style.borderColor = ""; // Сброс красной подсветки
+        }
+
+        // Проверка CVV
+        if (!cvvPattern.test(cvv)) {
+            isValid = false;
+            document.getElementById("cvv").style.borderColor = "red";
+        } else {
+            document.getElementById("cvv").style.borderColor = ""; // Сброс красной подсветки
+        }
+
+        // Проверка имени владельца карты
+        if (!cardHolderNamePattern.test(cardHolderName)) {
+            isValid = false;
+            document.getElementById("card_holder_name").style.borderColor = "red";
+        } else {
+            document.getElementById("card_holder_name").style.borderColor = ""; // Сброс красной подсветки
+        }
+
+        // Блокировка кнопки "Оформить опеку" в зависимости от результатов проверки
+        document.getElementById("submit_button").disabled = !isValid;
+    }
+
+    document.getElementById("card_number").addEventListener("input", validateCard);
+    document.getElementById("expiration_month").addEventListener("input", validateCard);
+    document.getElementById("expiration_year").addEventListener("input", validateCard);
+    document.getElementById("cvv").addEventListener("input", validateCard);
+    document.getElementById("card_holder_name").addEventListener("input", validateCard);
+    document.getElementById("amount").addEventListener("input", validateCard);
+
+</script>
+
 {% endblock %}

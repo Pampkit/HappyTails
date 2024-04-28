@@ -83,7 +83,7 @@ def submit_form():
     if request.method == 'POST':
         count = request.form['amount']  # Получаем данные из формы
         description = request.form['purpose']
-        email = request.form['email']
+        email = current_user.email
         date_now = date.today()
         animal_id = request.form['animal_id']  # Получаем идентификатор животного из формы
         user_id = request.form['user_id']
@@ -103,6 +103,7 @@ def submit_form():
 @login_required
 def user_cabinet():
     animals_users = []
+    # выборка подписок пользователя
     orders = Orders.query.filter_by(id_user=current_user.id).all()
     for i in range(len(orders)):
         animal = Animals.query.filter_by(id=orders[i].id_animal).all()
@@ -129,9 +130,30 @@ def admin_cabinet():
                            users_animals=users_animals)
 
 
+
+
+@app.route('/search_user', methods=['GET'])
+@login_required
+def search_user():
+    email = request.args.get('email', '')  # Получаем email из запрос
+    users = Users.query.filter_by(email=email, role=0).all()
+    all_orders = Orders.query.all()
+    users_animals = {}
+    for user in users:  # Используем только найденных пользователей
+        id_user = user.id
+        users_animals[str(id_user)] = ''
+        for order in all_orders:
+            if order.id_user == id_user:
+                name_animal = Animals.query.filter_by(id=order.id_animal).first()
+                users_animals[str(id_user)] += name_animal.name + " "
+    print(users_animals)
+
+    return render_template('admin_cabinet.html', name=current_user.name, all_users=users,
+                           users_animals=users_animals)
+
 @app.route('/delete_animal/<int:animal_id>', methods=['GET'])
 def delete_animal(animal_id):
-    print(animal_id)
+    # удаление животного по его id
     order = Orders.query.filter_by(id_user=current_user.id, id_animal=animal_id).first_or_404()
     db.session.delete(order)
     db.session.commit()
@@ -218,7 +240,7 @@ def upload():
     with open('image.jpg', 'wb') as f:
         f.write(img)
     # детекция породы
-    name_breed = detection_breed('image.jpg')
+    add_text, name_breed = detection_breed('image.jpg')
     care_breed = Breeds.query.filter_by(animal_breed=name_breed).first()
     # определение переменных сессии для последующей рекомендации
     if name_breed == 'Ой, неудалось узнать породу вашего животного, попробуйте другую фотографию':
@@ -228,7 +250,7 @@ def upload():
         session['breed_nutrition'] = ''
         session['breed_grooming'] = ''
     else:
-        session['breed_detected'] = name_breed
+        session['breed_detected'] = add_text + name_breed
         session['breed_health'] = care_breed.health
         session['breed_activity'] = care_breed.activity
         session['breed_nutrition'] = care_breed.nutrition
