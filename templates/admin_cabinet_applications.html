@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>User_cabinet</title>
+{% endblock %}
+
+{% block body %}
+<div class="main">
+
+    <div class="user_name">
+        <h1 class="center">Привет, {{ name }}!</h1>
+        <div class="user_button"><a href="/logout"><button>Выйти</button></a></div>
+    </div>
+
+    <div class="cats_bar">
+        <a href="/admin_cabinet"><button class="dogs_bar_cat">Пользователи</button></a>
+        <a href="/admin_cabinet_applications"><button class="dogs_bar_dog">Заявки</button></a>
+
+    </div>
+
+    <div class="user_content">
+        <h2 style="color: #333333;">Информация о Заявках:</h2>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Animal</th>
+                <th>Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in all_applications %}
+                <tr>
+                    <td>{{ app.name }}</td>
+                    <td>{{ app.animal }}</td>
+                    <td>{{ app.number }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

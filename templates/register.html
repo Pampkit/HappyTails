@@ -24,35 +24,35 @@
         </div>
         <form class="form" action="/register" method="post" onsubmit="return validateForm()" style="width: 50%; height: 1100px">
             <div class="input">
-                <input class="inp" name="surname" type="text" placeholder="Ваша Фамиля" pattern="[А-Яа-яЁё]{2,}" title="Введите не менее 2 символов кириллицей" required>
+                <input class="inp" name="surname" maxlength="50" type="text" placeholder="Ваша Фамиля" pattern="[А-Яа-яЁё]{2,}" title="Введите не менее 2 символов кириллицей" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="name" type="text" placeholder="Ваше имя" pattern="[А-Яа-яЁё]{2,}" title="Введите не менее 2 символов кириллицей" required>
+                <input class="inp" name="name" maxlength="50" type="text" placeholder="Ваше имя" pattern="[А-Яа-яЁё]{2,}" title="Введите не менее 2 символов кириллицей" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="name2" type="text" placeholder="Ваше Отечство" pattern="[А-Яа-яЁё]{2,}" title="Введите не менее 2 символов кириллицей" >
+                <input class="inp" name="name2" maxlength="50" type="text" placeholder="Ваше Отечство" pattern="[А-Яа-яЁё]{2,}" title="Введите не менее 2 символов кириллицей" >
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="number" type="tel" placeholder="Ваш номер" pattern="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$" title="Введите номер правильно" required>
+                <input class="inp" name="number" maxlength="50" type="tel" placeholder="Ваш номер" pattern="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$" title="Введите номер в фомате 8хххххххххх" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="email" type="email" placeholder="Ваш email" required>
+                <input class="inp" name="email" maxlength="50" type="email" placeholder="Ваш email" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="login" type="text" placeholder="Ваш логин" required>
+                <input class="inp" name="login" maxlength="50" type="text" placeholder="Ваш логин" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="password" type="text" placeholder="Ваш пароль" pattern="^(?=.*[a-zA-Z0-9]).{5,}$" title="Введите не менее 5 символов" required>
+                <input class="inp" name="password" maxlength="50" type="password" placeholder="Ваш пароль" pattern="^(?=.*[a-zA-Z0-9]).{5,}$" title="Введите не менее 5 символов латиницей/цифрами" required>
             </div>
             <hr>
             <div class="input">
-                <input class="inp" name="confirm_password" type="text" placeholder="Повторите пароль" title="Пароли должны совпадать" pattern="^(?=.*[a-zA-Z0-9]).{5,}$" oninput="checkPassword(this)" required>
+                <input class="inp" name="confirm_password" maxlength="50" type="password" placeholder="Повторите пароль" title="Пароли должны совпадать" pattern="^(?=.*[a-zA-Z0-9]).{5,}$" oninput="checkPassword(this)" required>
             </div>
             <hr>
             <button class="cont_button" type="submit" value="submit" style="margin-top: 60px">Зарегистрироваться</button>

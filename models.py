@@ -36,6 +36,7 @@ class Orders(db.Model):
     description = db.Column(db.String(1000))
     date = db.Column(db.Date(), nullable=False)
     email = db.Column(db.String(200), nullable=False)
+    cart_number = db.Column(db.String(200), nullable=False)
 
 
 class Breeds(db.Model):
@@ -45,3 +46,11 @@ class Breeds(db.Model):
     activity = db.Column(db.String(2000), nullable=False)
     nutrition = db.Column(db.String(2000), nullable=False)
     grooming = db.Column(db.String(2000), nullable=False)
+
+
+class Applications(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    animal = db.Column(db.String(200), nullable=False)
+    number = db.Column(db.String(200), nullable=False)
+    date = db.Column(db.Date(), nullable=False)

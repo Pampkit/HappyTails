@@ -1,5 +1,5 @@
 from flask import Flask
-from models import Animals, Users, db, Orders, Breeds
+from models import Animals, Users, db, Orders, Breeds, Applications
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///animal.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

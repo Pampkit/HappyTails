@@ -14,7 +14,7 @@
 
     <div class="user_content">
         <h1>Твои животные:</h1>
-        <p>Тут все твои животные, которые у тебя на подопечении.</p>
+        <p>Тут все твои животные, которые у тебя под опекой.</p>
         <div class="cats_content">
             {% for i in range(animals_users|length) %}
                 <div class="one_cat">
@@ -22,11 +22,11 @@
                     <div style="display: flex;">
                         <p class="one_cat_p">{{ animals_users[i].name }}</p>
 
-                        <a href="/delete_animal/{{ animals_users[i].id }}" onclick="return confirm('Вы действительно хотите отказаться от этого животного?');">
+                        <a href="/delete_animal/{{ animals_users[i].id }}" onclick="return confirm('Вы действительно хотите отменить опеку?');">
                             <img style="width: 30px; height:30px; margin-left:8px;" src="../static/images/cattrash.png" alt="">
                         </a>
                     </div>
-                    <a href="#" onclick="showSubscriptionDetails('{{ animals_users[i].name }}','{{ orders[i].count }}','{{ orders[i].date }}' )">
+                    <a href="#" onclick="showSubscriptionDetails('{{ animals_users[i].name }}','{{ orders[i].count }}','{{ orders[i].date }}', '{{ orders[i].cart_number }}' )">
                         <button class="one_cat_but" style="margin-left:0;">Подробнее</button>
                     </a>
                 </div>
@@ -54,17 +54,24 @@
             <p>Дата оформления:</p>
             <p style="margin-left: 5px;" id="date"></p>
         </div>
+        <div style="display: flex; margin-top: 10px;">
+            <p>Карточка с которой происходит списание:</p>
+            <p style="margin-left: 5px;" id="cart_number"></p>
+        </div>
+
 
     </div>
 </div>
 
 <script>
-    function showSubscriptionDetails(name, count, date) {
+    function showSubscriptionDetails(name, count, date, cart_number) {
         document.getElementById("name").innerText = name;
         document.getElementById("subscriptionModal").style.display = "block";
         document.getElementById("count").innerText = count;
         document.getElementById("subscriptionModal").style.display = "block";
         document.getElementById("date").innerText = date;
+        document.getElementById("subscriptionModal").style.display = "block";
+        document.getElementById("cart_number").innerText = cart_number;
         document.getElementById("subscriptionModal").style.display = "block";
     }
 

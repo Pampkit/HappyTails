@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Form</title>
+{% endblock %}
+
+{% block body %}
+<div class="main">
+    <div class="cats_name">
+        <h1>Спасибо вам!</h1>
+    </div>
+
+    <div class="cats_name">
+        <p>Пожалуйста, заполните правильно все поля данной формы</p>
+    </div>
+    <div class="cats_name">
+        <div id="success-message" style="display:none; justify-content: center; margin-top: 50px; font-size: 20px; margin-bottom:70px">
+            <h1>Заявка принята!</h1>
+        </div>
+    </div>
+
+    <form class="form" id="form" style="height:500px" method="POST" action="{{ url_for('submit_take') }}">
+        <div class="input">
+            <input class="inp" type="text" name="name" id="name" placeholder="Ваше ФИО" required>
+        </div>
+        <hr id="name_hr">
+
+        <div class="input">
+            <input class="inp" type="text" name="animal" id="animal" placeholder="Имя животного">
+        </div>
+        <hr id="animal_hr">
+
+        <div class="input">
+            <input class="inp" type="text" name="number" id="number" placeholder="Номер телефона">
+        </div>
+        <hr id="number_hr">
+
+        <div style="margin-top: 10px; margin-left: 50px">
+            <p>Обратите внимание, что после отправки формы, мы свяжемся с вами по этом номеру телефона</p>
+        </div>
+        <button id="submit_button" class="cont_button" type="button" onclick="showLoadingAnimation()" disabled>Подать заявку</button>
+        <button id="hidden-submit" style="display:none;" type="submit">Submit</button>
+    </form>
+
+
+</div>
+
+
+<script>
+    function showLoadingAnimation() {
+
+        // Через 5 секунд показать сообщение об успешной оплате
+        setTimeout(function() {
+            document.getElementById("form").style.display = "none";
+            document.getElementById("success-message").style.display = "block";
+
+            // Переадресовать через 2 секунды
+            setTimeout(function() {
+                document.getElementById("hidden-submit").click();
+            }, 2000);
+        }, 2000);
+    }
+
+    function validateCard() {
+        var name = document.getElementById("name").value;
+        var animal = document.getElementById("animal").value;
+        var number = document.getElementById("number").value;
+
+        // Проверка данных с использованием регулярных выражений
+        var namePattern = /[А-Яа-яЁё]{2,}/;
+        var animalPattern = /[А-Яа-яЁё]{2,}/;
+        var numberPattern = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
+
+
+        var isValid = true;
+
+        // Проверка имени
+        if (!namePattern.test(name)) {
+            isValid = false;
+            document.getElementById("name_hr").style.borderColor = "red";
+        } else {
+            document.getElementById("name_hr").style.borderColor = ""; // Сброс красной подсветки
+        }
+
+        // Проверка животного
+        if (!animalPattern.test(animal)) {
+            isValid = false;
+            document.getElementById("animal_hr").style.borderColor = "red";
+        } else {
+            document.getElementById("animal_hr").style.borderColor = ""; // Сброс красной подсветки
+        }
+
+        // Проверка номера
+        if (!numberPattern.test(number)) {
+            isValid = false;
+            document.getElementById("number_hr").style.borderColor = "red";
+        } else {
+            document.getElementById("number_hr").style.borderColor = ""; // Сброс красной подсветки
+        }
+
+        // Блокировка кнопки "Оформить опеку" в зависимости от результатов проверки
+        document.getElementById("submit_button").disabled = !isValid;
+    }
+
+    document.getElementById("name").addEventListener("input", validateCard);
+    document.getElementById("animal").addEventListener("input", validateCard);
+    document.getElementById("number").addEventListener("input", validateCard);
+
+</script>
+
+{% endblock %}

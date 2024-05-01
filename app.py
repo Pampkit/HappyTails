@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, flash, ses
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 
 from detection import detection_breed
-from models import Animals, Users, db, Orders, Breeds
+from models import Animals, Users, db, Orders, Breeds, Applications
 from werkzeug.security import generate_password_hash, check_password_hash
 from PIL import Image
 import os
@@ -84,19 +84,20 @@ def submit_form():
         count = request.form['amount']  # Получаем данные из формы
         description = request.form['purpose']
         email = current_user.email
+        card_number = request.form['card_number']
         date_now = date.today()
         animal_id = request.form['animal_id']  # Получаем идентификатор животного из формы
         user_id = request.form['user_id']
 
         # Создаем новую запись в базе данных
         new_order = Orders(id_user=user_id, id_animal=animal_id, count=count, description=description, date=date_now,
-                           email=email)
+                           email=email, cart_number=card_number)
 
         # Добавляем новую запись в сессию и сохраняем ее в базе данных
         db.session.add(new_order)
         db.session.commit()
 
-        return redirect(url_for('user_cabinet'))  # Перенаправляем пользователя на страницу успеха
+        return redirect(url_for('user_cabinet'))
 
 
 @app.route('/user_cabinet')
@@ -115,6 +116,7 @@ def user_cabinet():
 @login_required
 def admin_cabinet():
     all_orders = Orders.query.all()
+    # выборка всех пользователей с ролью 0
     all_users = Users.query.filter_by(role=0).all()
     users_animals = {}
     for i in range(len(all_users)):
@@ -124,12 +126,17 @@ def admin_cabinet():
             if all_orders[j].id_user == id_user:
                 name_animal = Animals.query.filter_by(id=all_orders[j].id_animal).first()
                 users_animals[str(id_user)] += name_animal.name + " "
-    print(users_animals)
-
     return render_template('admin_cabinet.html', name=current_user.name, all_users=all_users,
                            users_animals=users_animals)
 
 
+
+@app.route('/admin_cabinet_applications')
+@login_required
+def admin_cabinet_applications():
+    # выборка всех заявок
+    all_applications = Applications.query.all()
+    return render_template('admin_cabinet_applications.html', name=current_user.name, all_applications=all_applications)
 
 
 @app.route('/search_user', methods=['GET'])
@@ -205,7 +212,7 @@ def register_post():
     confirm_password = request.form.get('confirm_password')
     # проверка, что такого пользователя еще нет
     user = Users.query.filter_by(
-        login=login).first()  # if this returns a user, then the email already exists in database
+        login=login).first()
     if user or password != confirm_password:
         flash('Пользователь с таким логином уже существует', 'error')
         return redirect(url_for('register'))
@@ -262,6 +269,25 @@ def upload():
         print("The file does not exist")
     return redirect(url_for('breed'))
 
+@app.route("/take")
+def take():
+    return render_template('take.html')
+
+@app.route('/submit_take', methods=['POST'])
+def submit_take():
+    if request.method == 'POST':
+        name = request.form['name']  # Получаем данные из формы
+        animal = request.form['animal']
+        number = request.form['number']
+        date_now = date.today()
+
+        # Создаем новую запись в базе данных
+        new_app = Applications(name=name, animal=animal, number=number,date=date_now)
+
+        # Добавляем новую запись в сессию и сохраняем ее в базе данных
+        db.session.add(new_app)
+        db.session.commit()
+        return redirect(url_for('index'))  # Перенаправляем пользователя на страницу успеха
 
 if __name__ == "__main__":
     app.run(debug=True)

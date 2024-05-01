@@ -16,18 +16,26 @@
                 {% if current_user.is_authenticated %}
                     {% if order_user_single_animal %}
                         <div style="margin-top:20px;">
-                        <p>Это животное уже находится под вашей опекой</p>
+                            <p>Это животное уже находится под вашей опекой</p>
                         </div>
                     {% else %}
                         <div style="margin-top:20px;">
-                        <a href="/form/{{single_animal[0].name}}">Оформить опеку</a>
+                            <a style="background-image:linear-gradient(250deg,#833AB4 0%,#FD1D1D 50%,#FCB045 100%); background-clip: text; -webkit-background-clip: text; color: transparent;" href="/form/{{single_animal[0].name}}">Оформить опеку</a>
                         </div>
+
                     {% endif %}
                 {% else %}
                 <div style="margin-top:20px;">
                     <a href="/login">Войдите или Зарегистрируйтесь что бы оформить опеку</a>
                 </div>
                 {% endif %}
+            <div style="margin-top:20px;">
+                <p>или</p>
+            </div>
+            <div style="margin-top:20px;">
+
+                <a style="background-image:linear-gradient(250deg,#833AB4 0%,#FD1D1D 50%,#FCB045 100%); background-clip: text; -webkit-background-clip: text; color: transparent;" href="/take">Забрать животное к себе</a>
+            </div>
 
         </div>
 

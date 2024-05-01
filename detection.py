@@ -30,12 +30,10 @@ def detection_breed(img):
         breed_id = data.split(' ')[0]
         breed_name = breed_animal[int(breed_id)]
         ru_breed_name = ru_en_names[breed_name]
-        print(ru_breed_name)
-
         breed_conf = data.split(' ')[5]
+        # проверка на породистость
         if float(breed_conf[:5]) <= 0.80:
             add_text = "Похоже ваш питомец метис, порода, которую удалось обнаружить - "
-
         if os.path.exists("runs/"):
             shutil.rmtree('runs/')
         else:
