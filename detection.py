@@ -44,6 +44,6 @@ def detection_breed(img):
             shutil.rmtree('runs/')
         else:
             print("The file does not exist")
-        return add_text, "Ой, неудалось узнать породу вашего животного, попробуйте другую фотографию"
+        return add_text, "Ой, не удалось узнать породу вашего животного, попробуйте другую фотографию"
 
 

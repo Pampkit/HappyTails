@@ -250,8 +250,8 @@ def upload():
     add_text, name_breed = detection_breed('image.jpg')
     care_breed = Breeds.query.filter_by(animal_breed=name_breed).first()
     # определение переменных сессии для последующей рекомендации
-    if name_breed == 'Ой, неудалось узнать породу вашего животного, попробуйте другую фотографию':
-        session['breed_detected'] = 'Ой, неудалось узнать породу вашего животного, попробуйте другую фотографию'
+    if name_breed == 'Ой, не удалось узнать породу вашего животного, попробуйте другую фотографию':
+        session['breed_detected'] = 'Ой, не удалось узнать породу вашего животного, попробуйте другую фотографию'
         session['breed_health'] = ''
         session['breed_activity'] = ''
         session['breed_nutrition'] = ''

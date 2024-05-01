@@ -36,22 +36,30 @@
     </div>
 
     <div class="help_document">
-        <div class="li_help">
-            <p class="o_li">Здоровье</p>
-            <p>{{ breed_health}}</p>
+        {% if breed_health != '' %}
+            <div class="li_help">
+                <p class="o_li">Здоровье</p>
+                <p>{{ breed_health}}</p>
             </div>
-        <div class="li_help">
-            <p class="o_li">Физические нагрузки</p>
-            <p>{{ breed_activity}}</p>
-        </div>
-        <div class="li_help">
-            <p class="o_li">Питание</p>
-            <p>{{ breed_nutrition}}</p>
-        </div>
-        <div class="li_help">
-            <p class="o_li">Уход</p>
-            <p>{{ breed_grooming}}</p>
-        </div>
+        {% endif %}
+        {% if breed_activity != '' %}
+            <div class="li_help">
+                <p class="o_li">Физические нагрузки</p>
+                <p>{{ breed_activity}}</p>
+            </div>
+        {% endif %}
+        {% if breed_nutrition != '' %}
+            <div class="li_help">
+                <p class="o_li">Питание</p>
+                <p>{{ breed_nutrition}}</p>
+            </div>
+        {% endif %}
+        {% if breed_grooming != '' %}
+            <div class="li_help">
+                <p class="o_li">Уход</p>
+                <p>{{ breed_grooming}}</p>
+            </div>
+        {% endif %}
     </div>
 
     <div>
