@@ -12,7 +12,7 @@
     <div class="desc">
         <h3 style="margin-top: 30px;">Загрузите фотографию своего питомца и получите информацию о его породе и правилам ухода</h3>
     </div>
-    <form style="margin-top:50px;" action="{{url_for('upload')}}" method="post" enctype="multipart/form-data">
+    <form style="margin-top:50px;" action="{{url_for('upload')}}" method="post" enctype="multipart/form-data" onsubmit="disableButtonDuringUpload()">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
         <div class="example-2">
@@ -81,6 +81,11 @@
         label.innerHTML = fileName !== '' ? fileName : 'Загрузить файл';
         uploadButton.disabled = fileName === '';
     }
+    function disableButtonDuringUpload() {
+        var uploadButton = document.getElementById('uploadButton');
+        uploadButton.disabled = true;
+    }
+
 (function() {
   'use strict';
 
